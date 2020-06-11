@@ -17,19 +17,19 @@ let
   buildFromTarball = stdenv.isDarwin;
 in stdenv.mkDerivation rec {
   pname = "libvirt";
-  version = "6.2.0";
+  version = "6.4.0";
 
   src =
     if buildFromTarball then
       fetchurl {
         url = "http://libvirt.org/sources/${pname}-${version}.tar.xz";
-        sha256 = "1c8grqf751blsgs15wx2p05wvankdrady6290vwc85v94cgqij5f";
+        sha256 = "1rwb8w19wklhb6a1j0233rsb66x9x0sp1hbcgjh0i79n43rbqvjq";
       }
     else
       fetchgit {
         url = "git://libvirt.org/libvirt.git";
         rev = "v${version}";
-        sha256 = "1wyihi8bhwsck9b7f3b8yhlz145sjdyyj3ykjiszrqnp0y99xxy2";
+        sha256 = "12jbm3absy4i0wmd22n6cy9ws43rqphzzrp75lnbgsp7spd2qaxk";
         fetchSubmodules = true;
       };
 
@@ -54,6 +54,8 @@ in stdenv.mkDerivation rec {
     PATH=${stdenv.lib.makeBinPath ([ dnsmasq ] ++ optionals stdenv.isLinux [ iproute iptables ebtables lvm2 systemd numad ] ++ optionals enableIscsi [ openiscsi ])}:$PATH
     # the path to qemu-kvm will be stored in VM's .xml and .save files
     # do not use "''${qemu_kvm}/bin/qemu-kvm" to avoid bound VMs to particular qemu derivations
+    substituteInPlace src/util/virpolkit.h \
+      --replace '/usr/bin/pkttyagent' '/run/current-system/sw/bin/pkttyagent'
     substituteInPlace src/lxc/lxc_conf.c \
       --replace 'lxc_path,' '"/run/libvirt/nix-emulators/libvirt_lxc",'
     patchShebangs . # fixes /usr/bin/python references
