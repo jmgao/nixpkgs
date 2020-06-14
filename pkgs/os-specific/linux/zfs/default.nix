@@ -42,7 +42,9 @@ let
         inherit rev sha256;
       };
 
-      patches = [ ] ++ extraPatches;
+      patches = [
+        ./zfs_affinity.patch
+      ] ++ extraPatches;
 
       postPatch = optionalString buildKernel ''
         patchShebangs scripts
