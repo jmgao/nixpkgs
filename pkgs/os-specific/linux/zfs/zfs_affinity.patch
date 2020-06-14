@@ -1,0 +1,36 @@
+diff --git a/include/spl/sys/sysmacros.h b/include/spl/sys/sysmacros.h
+index e11eaec..afc3b69 100644
+--- a/include/spl/sys/sysmacros.h
++++ b/include/spl/sys/sysmacros.h
+@@ -76,8 +76,12 @@
+ 
+ #define	proc_pageout			NULL
+ #define	curproc				current
++
++extern const struct cpumask *spl_get_housekeeping_cpus(void);
++
+ #define	max_ncpus			num_possible_cpus()
+-#define	boot_ncpus			num_online_cpus()
++#define	avail_cpus			spl_get_housekeeping_cpus()
++#define	boot_ncpus			cpumask_weight(avail_cpus)
+ #define	CPU_SEQID			smp_processor_id()
+ #define	is_system_labeled()		0
+ 
+diff --git a/module/spl/spl-thread.c b/module/spl/spl-thread.c
+index 0352a31..a7a11f4 100644
+--- a/module/spl/spl-thread.c
++++ b/module/spl/spl-thread.c
+@@ -27,6 +27,13 @@
+ #include <sys/thread.h>
+ #include <sys/kmem.h>
+ #include <sys/tsd.h>
++#include <linux/sched/isolation.h>
++
++const struct cpumask* spl_get_housekeeping_cpus(void)
++{
++	return housekeeping_cpumask(HK_FLAG_DOMAIN);
++}
++EXPORT_SYMBOL(spl_get_housekeeping_cpus);
+ 
+ /*
+  * Thread interfaces
