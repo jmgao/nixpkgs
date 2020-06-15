@@ -42,8 +42,8 @@ stdenv.mkDerivation rec {
     + stdenv.lib.optionalString nixosTestRunner "-for-vm-tests";
 
   src = fetchurl {
-    url = "https://wiki.qemu.org/download/qemu-${version}.tar.bz2";
-    sha256 = "1ysyax70ljih46b87fd6rvrm1y0vvkmnmylr2qpgd2kf18fzhs63";
+    url= "https://download.qemu.org/qemu-${version}.tar.xz";
+    sha256 = "1dlcwyshdp94fwd30pddxf9bn2q8dfw5jsvry2gvdj551wmaj4rg";
   };
 
   nativeBuildInputs = [ python python.pkgs.sphinx pkgconfig flex bison ]
@@ -108,6 +108,8 @@ stdenv.mkDerivation rec {
       "--sysconfdir=/etc"
       "--localstatedir=/var"
       "--enable-docs"
+      "--enable-tools"
+      "--enable-guest-agent"
     ]
     # disable sysctl check on darwin.
     ++ optional stdenv.isDarwin "--cpu=x86_64"
