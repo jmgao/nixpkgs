@@ -401,15 +401,7 @@ let
 
     jingoo = callPackage ../development/ocaml-modules/jingoo { };
 
-    js_of_ocaml =
-    if lib.versionOlder "4.02" ocaml.version
-    then callPackage ../development/tools/ocaml/js_of_ocaml/3.0.nix { }
-    else js_of_ocaml_2;
-
-    js_of_ocaml_2 = callPackage ../development/tools/ocaml/js_of_ocaml {
-      base64 = base64_2;
-      lwt = lwt2;
-    };
+    js_of_ocaml = callPackage ../development/tools/ocaml/js_of_ocaml { };
 
     js_of_ocaml-camlp4 = callPackage ../development/tools/ocaml/js_of_ocaml/camlp4.nix {};
 
@@ -538,6 +530,8 @@ let
     mirage-crypto-pk = callPackage ../development/ocaml-modules/mirage-crypto/pk.nix { };
 
     mirage-crypto-rng = callPackage ../development/ocaml-modules/mirage-crypto/rng.nix { };
+
+    mirage-crypto-rng-mirage = callPackage ../development/ocaml-modules/mirage-crypto/rng-mirage.nix { };
 
     mirage-device = callPackage ../development/ocaml-modules/mirage-device { };
 
@@ -720,9 +714,7 @@ let
 
     phylogenetics = callPackage ../development/ocaml-modules/phylogenetics { };
 
-    piqi = callPackage ../development/ocaml-modules/piqi {
-      base64 = base64_2;
-    };
+    piqi = callPackage ../development/ocaml-modules/piqi { };
 
     piqi-ocaml = callPackage ../development/ocaml-modules/piqi-ocaml { };
 

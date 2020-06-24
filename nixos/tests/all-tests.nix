@@ -119,6 +119,7 @@ in
   installed-tests = pkgs.recurseIntoAttrs (handleTest ./installed-tests {});
   gocd-agent = handleTest ./gocd-agent.nix {};
   gocd-server = handleTest ./gocd-server.nix {};
+  go-neb = handleTest ./go-neb.nix {};
   google-oslogin = handleTest ./google-oslogin {};
   grafana = handleTest ./grafana.nix {};
   graphite = handleTest ./graphite.nix {};
@@ -235,6 +236,7 @@ in
   nginx-pubhtml = handleTest ./nginx-pubhtml.nix {};
   nginx-sandbox = handleTestOn ["x86_64-linux"] ./nginx-sandbox.nix {};
   nginx-sso = handleTest ./nginx-sso.nix {};
+  nginx-variants = handleTest ./nginx-variants.nix {};
   nix-ssh-serve = handleTest ./nix-ssh-serve.nix {};
   nixos-generate-config = handleTest ./nixos-generate-config.nix {};
   novacomd = handleTestOn ["x86_64-linux"] ./novacomd.nix {};
@@ -344,6 +346,7 @@ in
   vault = handleTest ./vault.nix {};
   victoriametrics = handleTest ./victoriametrics.nix {};
   virtualbox = handleTestOn ["x86_64-linux"] ./virtualbox.nix {};
+  wasabibackend = handleTest ./wasabibackend.nix {};
   wireguard = handleTest ./wireguard {};
   wordpress = handleTest ./wordpress.nix {};
   xandikos = handleTest ./xandikos.nix {};
