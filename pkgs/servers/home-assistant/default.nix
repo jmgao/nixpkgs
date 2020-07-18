@@ -27,6 +27,11 @@ let
     (mkOverride "astral" "1.10.1"
       "d2a67243c4503131c856cafb1b1276de52a86e5b8a1d507b7e08bee51cb67bf1")
 
+    # We have 3.x in nixpkgs which is incompatible with home-assistant atm:
+    # https://github.com/home-assistant/core/blob/dev/requirements_all.txt
+    (mkOverride "pyowm" "2.10.0"
+      "1xvcv3sbcn9na8cwz21nnjlixysfk5lymnf65d1nqkbgacc1mm4g")
+
     # required by aioesphomeapi
     (self: super: {
       protobuf = super.protobuf.override {
@@ -67,7 +72,7 @@ let
   extraBuildInputs = extraPackages py.pkgs;
 
   # Don't forget to run parse-requirements.py after updating
-  hassVersion = "0.111.4";
+  hassVersion = "0.112.3";
 
 in with py.pkgs; buildPythonApplication rec {
   pname = "homeassistant";
@@ -86,7 +91,7 @@ in with py.pkgs; buildPythonApplication rec {
     owner = "home-assistant";
     repo = "core";
     rev = version;
-    sha256 = "08dkqczpmdaz8k9fsshgvgma7i7sffzgmhsi49qki7vwn20hl2hf";
+    sha256 = "1azfbjnyaamdnl2f3cllh6pd3kinl1wjqb4hlb569gb8zqs5bsx2";
   };
 
   propagatedBuildInputs = [
@@ -132,6 +137,6 @@ in with py.pkgs; buildPythonApplication rec {
     homepage = "https://home-assistant.io/";
     description = "Open-source home automation platform running on Python 3";
     license = licenses.asl20;
-    maintainers = with maintainers; [ dotlambda globin mic92 ];
+    maintainers = with maintainers; [ dotlambda globin mic92 hexa ];
   };
 }

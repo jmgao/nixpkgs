@@ -255,7 +255,7 @@ let
       SND_HDA_RECONFIG    = yes; # Support reconfiguration of jack functions
       # Support configuring jack functions via fw mechanism at boot
       SND_HDA_PATCH_LOADER = yes;
-      SND_HDA_CODEC_CA0132_DSP = whenOlder "5.8" yes; # Enable DSP firmware loading on Creative Soundblaster Z/Zx/ZxR/Recon
+      SND_HDA_CODEC_CA0132_DSP = whenOlder "5.7" yes; # Enable DSP firmware loading on Creative Soundblaster Z/Zx/ZxR/Recon
       SND_OSSEMUL         = yes;
       SND_USB_CAIAQ_INPUT = yes;
       # Enable PSS mixer (Beethoven ADSP-16 and other compatible)
@@ -269,7 +269,7 @@ let
       SND_SOC_SOF_APOLLOLAKE_SUPPORT    = yes;
       SND_SOC_SOF_CANNONLAKE_SUPPORT    = yes;
       SND_SOC_SOF_COFFEELAKE_SUPPORT    = yes;
-      SND_SOC_SOF_COMETLAKE_H_SUPPORT   = yes;
+      SND_SOC_SOF_COMETLAKE_H_SUPPORT   = whenOlder "5.8" yes;
       SND_SOC_SOF_COMETLAKE_LP_SUPPORT  = yes;
       SND_SOC_SOF_ELKHARTLAKE_SUPPORT   = yes;
       SND_SOC_SOF_GEMINILAKE_SUPPORT    = yes;
