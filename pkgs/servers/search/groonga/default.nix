@@ -7,11 +7,11 @@
 stdenv.mkDerivation rec {
 
   pname = "groonga";
-  version = "10.0.4";
+  version = "10.0.6";
 
   src = fetchurl {
     url    = "https://packages.groonga.org/source/groonga/${pname}-${version}.tar.gz";
-    sha256 = "1gf9vqjhq89f5xqn90pwdbz7amv38j78s3pzlxd1c2q3g24wklrj";
+    sha256 = "1q3xx6jc967nj7h8gvnrqxn8657dn3qy9j802rjzcg6iwlpjack9";
   };
 
   buildInputs = with stdenv.lib;
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
     maintainers = [ maintainers.ericsagnes ];
     platforms   = platforms.unix;
     longDescription = ''
-      Groonga is an open-source fulltext search engine and column store. 
+      Groonga is an open-source fulltext search engine and column store.
       It lets you write high-performance applications that requires fulltext search.
     '';
   };

@@ -59,7 +59,6 @@ let
     freetype
     gdk-pixbuf
     glib
-    gnome2.GConf
     gnome2.pango
     gtk3-x11
     gtk2-x11
@@ -87,11 +86,11 @@ in
 stdenv.mkDerivation rec {
   pname = "minecraft-launcher";
 
-  version = "2.1.15166";
+  version = "2.1.17627";
 
   src = fetchurl {
     url = "https://launcher.mojang.com/download/linux/x86_64/minecraft-launcher_${version}.tar.gz";
-    sha256 = "14q41zk370zvzz2jbynhfw11r98l9x49142lqf2izfl42fhv8yhw";
+    sha256 = "04zjjyy0psfxfibzbac9w0kkgqwfpf1qmbj5gspyvhaib7k8may0";
   };
 
   icon = fetchurl {

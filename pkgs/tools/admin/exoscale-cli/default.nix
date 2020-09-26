@@ -1,18 +1,19 @@
-{ stdenv, buildGo114Package, fetchFromGitHub }:
+{ stdenv, buildGoPackage, fetchFromGitHub }:
 
-buildGo114Package rec {
+buildGoPackage rec {
   pname = "exoscale-cli";
-  version = "1.14.0";
+  version = "1.17.0";
 
   src = fetchFromGitHub {
     owner  = "exoscale";
     repo   = "cli";
     rev    = "v${version}";
-    sha256 = "10sx542m6r6yq99nqn69bjfc6rv4nr9swi74rfccxb7dbifdrqpp";
+    sha256 = "01bll978dis8pqvgrbigzgszkx3kjm6acrw44z6j7algw3an352r";
   };
 
   goPackagePath = "github.com/exoscale/cli";
-  buildFlags = "-ldflags=-X=main.version=${version}";
+
+  buildFlagsArray = [ "-ldflags=-s -w -X main.version=${version} -X main.commit=${src.rev}" ];
 
   # ensures only the cli binary is built and we don't clutter bin/ with submodules
   subPackages = [ "." ];

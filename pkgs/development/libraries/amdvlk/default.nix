@@ -1,6 +1,5 @@
 { stdenv
 , lib
-, fetchpatch
 , fetchRepoProject
 , cmake
 , ninja
@@ -16,16 +15,19 @@
 , xorg
 , zlib
 }:
+let
 
-stdenv.mkDerivation rec {
+  suffix = if stdenv.system == "x86_64-linux" then "64" else "32";
+
+in stdenv.mkDerivation rec {
   pname = "amdvlk";
-  version = "2020.Q2.6";
+  version = "2020.Q3.5";
 
   src = fetchRepoProject {
     name = "${pname}-src";
     manifest = "https://github.com/GPUOpen-Drivers/AMDVLK.git";
     rev = "refs/tags/v-${version}";
-    sha256 = "1h5j4qaqm4kg5jybkkk6v1mdy0jx0k06mrb8n8jl415z08f0pjgj";
+    sha256 = "08fj3cg3axnwadlpfim23g5nyjl69044fqxdr57af6y79441njay";
   };
 
   buildInputs = [
@@ -54,6 +56,7 @@ stdenv.mkDerivation rec {
 
   rpath = lib.makeLibraryPath [
     libdrm
+    openssl
     stdenv.cc.cc.lib
     xorg.libX11
     xorg.libxcb
@@ -62,14 +65,24 @@ stdenv.mkDerivation rec {
 
   cmakeDir = "../drivers/xgl";
 
+  # LTO is disabled in gcc for i686 as of #66528
+  cmakeFlags = stdenv.lib.optionals stdenv.is32bit ["-DXGL_ENABLE_LTO=OFF"];
+
+  postPatch = stdenv.lib.optionalString stdenv.is32bit ''
+    substituteInPlace drivers/pal/cmake/PalCompilerOptions.cmake \
+      --replace "pal_setup_gcc_ipo()" ""
+  '';
+
   installPhase = ''
-    install -Dm755 -t $out/lib icd/amdvlk64.so
-    install -Dm644 -t $out/share/vulkan/icd.d ../drivers/AMDVLK/json/Redhat/amd_icd64.json
+    install -Dm755 -t $out/lib icd/amdvlk${suffix}.so
+    install -Dm644 -t $out/share/vulkan/icd.d ../drivers/AMDVLK/json/Redhat/amd_icd${suffix}.json
 
-    substituteInPlace $out/share/vulkan/icd.d/amd_icd64.json --replace \
+    substituteInPlace $out/share/vulkan/icd.d/amd_icd${suffix}.json --replace \
       "/usr/lib64" "$out/lib"
+    substituteInPlace $out/share/vulkan/icd.d/amd_icd${suffix}.json --replace \
+      "/usr/lib" "$out/lib"
 
-    patchelf --set-rpath "$rpath" $out/lib/amdvlk64.so
+    patchelf --set-rpath "$rpath" $out/lib/amdvlk${suffix}.so
   '';
 
   # Keep the rpath, otherwise vulkaninfo and vkcube segfault
@@ -78,8 +91,9 @@ stdenv.mkDerivation rec {
   meta = with stdenv.lib; {
     description = "AMD Open Source Driver For Vulkan";
     homepage = "https://github.com/GPUOpen-Drivers/AMDVLK";
+    changelog = "https://github.com/GPUOpen-Drivers/AMDVLK/releases/tag/v-${version}";
     license = licenses.mit;
-    platforms = [ "x86_64-linux" ];
-    maintainers = with maintainers; [ Flakebi ];
+    platforms = [ "x86_64-linux" "i686-linux" ];
+    maintainers = with maintainers; [ danieldk Flakebi ];
   };
 }
